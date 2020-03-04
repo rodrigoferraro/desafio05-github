@@ -45,6 +45,12 @@ export default class Main extends Component {
     try {
       const { newRepo, repositories } = this.state;
 
+      const repoIsAlreadyListed = repositories.find(r => r.name === newRepo);
+
+      if (repoIsAlreadyListed) {
+        throw 'Repositório já existe na lista.';
+      }
+
       const response = await api.get(`/repos/${newRepo}`);
 
       const data = { name: response.data.full_name };
