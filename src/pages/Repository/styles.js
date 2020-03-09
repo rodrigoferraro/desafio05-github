@@ -103,4 +103,17 @@ export const IssueList = styled.ul`
   }
 `;
 
-export const IssueFilter = styled.ul``;
+export const IssueFilter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 15px;
+
+  button {
+    border-radius: 4px;
+    margin: 0 5px;
+    padding: 10px;
+
+    background: ${props => (props.lastClicked ? 'green' : 'lightBlue')};
+  }
+`;
