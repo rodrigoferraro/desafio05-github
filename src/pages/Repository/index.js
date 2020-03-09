@@ -4,7 +4,13 @@ import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 import Container from '../../components/Container';
-import { Loading, Owner, IssueList, IssueFilter } from './styles';
+import {
+  Loading,
+  Owner,
+  IssueList,
+  IssueFilter,
+  PageNavigator,
+} from './styles';
 
 export default class Repository extends Component {
   static propTypes = {
@@ -25,11 +31,12 @@ export default class Repository extends Component {
       { state: 'closed', label: 'Fechadas', lastClicked: false },
     ],
     index: 0,
+    page: 1,
   };
 
   async componentDidMount() {
     const { match } = this.props;
-    const { filters } = this.state;
+    const { filters, page } = this.state;
 
     const repoName = decodeURIComponent(match.params.repository);
     // Precisamos acessar aos endereços da api
@@ -53,6 +60,7 @@ export default class Repository extends Component {
       api.get(`/repos/${repoName}/issues`, {
         params: {
           state: filters.find(f => f.lastClicked).state,
+          page,
           per_page: 5,
         },
       }),
@@ -65,6 +73,11 @@ export default class Repository extends Component {
     });
   }
 
+  handlePageNavigationClick = async p => {
+    await this.setState({ page: p });
+    this.loadIssues();
+  };
+
   handleIssueFilterClick = async index => {
     await this.setState({ index });
     this.loadIssues();
@@ -72,13 +85,14 @@ export default class Repository extends Component {
 
   loadIssues = async () => {
     const { match } = this.props;
-    const { filters, index } = this.state;
+    const { filters, index, page } = this.state;
 
     const repoName = decodeURIComponent(match.params.repository);
 
     const filteredIssues = await api.get(`/repos/${repoName}/issues`, {
       params: {
         state: filters[index].state,
+        page,
         per_page: 5,
       },
     });
@@ -131,6 +145,17 @@ export default class Repository extends Component {
               </div>
             </li>
           ))}
+          <PageNavigator lastClicked={index}>
+            {filters.map((filtro, indice) => (
+              <button
+                type="button"
+                key={filtro.label}
+                onClick={() => this.handlePageNavigatorClick(indice)}
+              >
+                {filtro.label}
+              </button>
+            ))}
+          </PageNavigator>
         </IssueList>
       </Container>
     );

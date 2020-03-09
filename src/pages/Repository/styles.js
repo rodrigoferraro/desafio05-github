@@ -113,11 +113,26 @@ export const IssueFilter = styled.div`
     outline: 0;
     border: 0;
     padding: 8px;
-    margin: 0 0.25rem;
+    margin: 0 0.3vh;
 
     &:nth-child(${props => props.lastClicked + 1}) {
       background: #7159c1;
       color: white;
     }
+  }
+`;
+
+export const PageNavigator = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+
+  button {
+    width: 100vw;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 0 0.3vh;
+    border: 0;
+    outline: 0;
   }
 `;
