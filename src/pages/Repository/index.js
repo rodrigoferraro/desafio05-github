@@ -20,9 +20,9 @@ export default class Repository extends Component {
     issues: [],
     loading: true,
     filters: [
-      { state: 'all', lastClicked: true },
-      { state: 'open', lastClicked: false },
-      { state: 'closed', lastClicked: false },
+      { state: 'all', label: 'Todas', lastClicked: true },
+      { state: 'open', label: 'Abertas', lastClicked: false },
+      { state: 'closed', label: 'Fechadas', lastClicked: false },
     ],
     index: 0,
   };
@@ -110,10 +110,10 @@ export default class Repository extends Component {
             {filters.map((filtro, indice) => (
               <button
                 type="button"
-                key={filtro.state}
+                key={filtro.label}
                 onClick={() => this.handleIssueFilterClick(indice)}
               >
-                {filtro.state}
+                {filtro.label}
               </button>
             ))}
           </IssueFilter>

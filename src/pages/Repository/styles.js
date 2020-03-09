@@ -106,14 +106,18 @@ export const IssueList = styled.ul`
 export const IssueFilter = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   padding-bottom: 15px;
-
   button {
+    width: 100vw;
     border-radius: 4px;
-    margin: 0 5px;
-    padding: 10px;
+    outline: 0;
+    border: 0;
+    padding: 8px;
+    margin: 0 0.25rem;
 
-    background: ${props => (props.lastClicked ? 'green' : 'lightBlue')};
+    &:nth-child(${props => props.lastClicked + 1}) {
+      background: #7159c1;
+      color: white;
+    }
   }
 `;
