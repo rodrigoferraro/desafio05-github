@@ -8,10 +8,12 @@ export const Form = styled.form`
 
   input {
     flex: 1;
-    border: 1px solid ${props => (props.error ? 'red' : '#eee')};
+    border: 1px solid ${props => (props.error ? '#ff6b6b' : '#eee')};
     padding: 10px 15px;
     border-radius: 4px;
     font-size: 16px;
+
+    transition: border 0.5s ease-out;
   }
 `;
 
