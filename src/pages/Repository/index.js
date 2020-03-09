@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 import Container from '../../components/Container';
-import { Loading, Owner, IssueList } from './styles';
+import { Loading, Owner, IssueList, IssueFilter } from './styles';
 
 export default class Repository extends Component {
   static propTypes = {
@@ -58,6 +58,10 @@ export default class Repository extends Component {
     });
   }
 
+  handleIssueFilterClick = async () => {
+    console.log('should load opened issues');
+  };
+
   render() {
     const { repository, issues, loading } = this.state;
 
@@ -75,6 +79,15 @@ export default class Repository extends Component {
         </Owner>
 
         <IssueList>
+          <IssueFilter>
+            <button
+              type="button"
+              key="open"
+              onClick={() => this.handleIssueFilterClick()}
+            >
+              Open
+            </button>
+          </IssueFilter>
           {issues.map(issue => (
             <li key={String(issue.id)}>
               <img src={issue.user.avatar_url} alt={issue.user.login} />

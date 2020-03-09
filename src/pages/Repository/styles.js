@@ -102,3 +102,5 @@ export const IssueList = styled.ul`
     }
   }
 `;
+
+export const IssueFilter = styled.ul``;
