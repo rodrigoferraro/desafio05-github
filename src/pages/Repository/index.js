@@ -19,10 +19,17 @@ export default class Repository extends Component {
     repository: {},
     issues: [],
     loading: true,
+    filters: [
+      { state: 'all', lastClicked: true },
+      { state: 'open', lastClicked: false },
+      { state: 'closed', lastClicked: false },
+    ],
+    index: 0,
   };
 
   async componentDidMount() {
     const { match } = this.props;
+    const { filters } = this.state;
 
     const repoName = decodeURIComponent(match.params.repository);
     // Precisamos acessar aos endereços da api
@@ -45,7 +52,7 @@ export default class Repository extends Component {
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state: 'open',
+          state: filters.find(f => f.lastClicked).state,
           per_page: 5,
         },
       }),
@@ -58,12 +65,31 @@ export default class Repository extends Component {
     });
   }
 
-  handleIssueFilterClick = async () => {
-    console.log('should load opened issues');
+  handleIssueFilterClick = async index => {
+    await this.setState({ index });
+    this.loadIssues();
+  };
+
+  loadIssues = async () => {
+    const { match } = this.props;
+    const { filters, index } = this.state;
+
+    const repoName = decodeURIComponent(match.params.repository);
+
+    const filteredIssues = await api.get(`/repos/${repoName}/issues`, {
+      params: {
+        state: filters[index].state,
+        per_page: 5,
+      },
+    });
+
+    this.setState({
+      issues: filteredIssues.data,
+    });
   };
 
   render() {
-    const { repository, issues, loading } = this.state;
+    const { repository, issues, loading, filters, index } = this.state;
 
     if (loading) {
       return <Loading>Carregando...</Loading>;
@@ -79,14 +105,17 @@ export default class Repository extends Component {
         </Owner>
 
         <IssueList>
-          <IssueFilter>
-            <button
-              type="button"
-              key="open"
-              onClick={() => this.handleIssueFilterClick()}
-            >
-              Open
-            </button>
+          {/* preciso passar como parâmetro qual botão foi clicado por último */}
+          <IssueFilter lastClicked={index}>
+            {filters.map((filtro, indice) => (
+              <button
+                type="button"
+                key={filtro.state}
+                onClick={() => this.handleIssueFilterClick(indice)}
+              >
+                {filtro.state}
+              </button>
+            ))}
           </IssueFilter>
           {issues.map(issue => (
             <li key={String(issue.id)}>
