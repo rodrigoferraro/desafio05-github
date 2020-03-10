@@ -73,8 +73,13 @@ export default class Repository extends Component {
     });
   }
 
-  handlePageNavigationClick = async p => {
-    await this.setState({ page: p });
+  handlePageNavigationClick = async nav => {
+    const { page } = this.state;
+
+    await this.setState({
+      page: nav === 'previous' ? page - 1 : page + 1,
+    });
+
     this.loadIssues();
   };
 
@@ -103,7 +108,7 @@ export default class Repository extends Component {
   };
 
   render() {
-    const { repository, issues, loading, filters, index } = this.state;
+    const { repository, issues, loading, filters, index, page } = this.state;
 
     if (loading) {
       return <Loading>Carregando...</Loading>;
@@ -119,7 +124,6 @@ export default class Repository extends Component {
         </Owner>
 
         <IssueList>
-          {/* preciso passar como parâmetro qual botão foi clicado por último */}
           <IssueFilter lastClicked={index}>
             {filters.map((filtro, indice) => (
               <button
@@ -145,16 +149,21 @@ export default class Repository extends Component {
               </div>
             </li>
           ))}
-          <PageNavigator lastClicked={index}>
-            {filters.map((filtro, indice) => (
-              <button
-                type="button"
-                key={filtro.label}
-                onClick={() => this.handlePageNavigatorClick(indice)}
-              >
-                {filtro.label}
-              </button>
-            ))}
+          <PageNavigator>
+            <button
+              type="button"
+              disabled={page <= 1}
+              onClick={() => this.handlePageNavigationClick('previous')}
+            >
+              Anterior
+            </button>
+            <span> {page} </span>
+            <button
+              type="button"
+              onClick={() => this.handlePageNavigationClick('next')}
+            >
+              Próxima
+            </button>
           </PageNavigator>
         </IssueList>
       </Container>

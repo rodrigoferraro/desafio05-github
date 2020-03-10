@@ -134,5 +134,14 @@ export const PageNavigator = styled.div`
     margin: 0 0.3vh;
     border: 0;
     outline: 0;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    font-size: 2vh;
+    padding: 15px 15px 0 15px;
   }
 `;
