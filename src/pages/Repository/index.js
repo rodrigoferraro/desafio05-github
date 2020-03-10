@@ -84,7 +84,7 @@ export default class Repository extends Component {
   };
 
   handleIssueFilterClick = async index => {
-    await this.setState({ index });
+    await this.setState({ index, page: 1 });
     this.loadIssues();
   };
 

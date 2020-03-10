@@ -123,25 +123,22 @@ export const IssueFilter = styled.div`
 `;
 
 export const PageNavigator = styled.div`
+  padding-top: 15px;
   display: flex;
   justify-content: space-between;
-  padding-top: 15px;
+  align-items: center;
+  font-size: 12px;
 
   button {
-    width: 100vw;
+    transition: opacity 0.25s ease-out;
     border-radius: 4px;
-    padding: 8px;
-    margin: 0 0.3vh;
-    border: 0;
     outline: 0;
+    border: 0;
+    padding: 8px;
 
     &:disabled {
+      opacity: 0.35;
       cursor: not-allowed;
     }
-  }
-
-  span {
-    font-size: 2vh;
-    padding: 15px 15px 0 15px;
   }
 `;
